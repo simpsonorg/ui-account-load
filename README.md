@@ -79,7 +79,7 @@ Push to the branch: git push origin my-feature.
 Submit a pull request.
 
 License
-Specify your license here (e.g., MIT-License).
+Specify your license here (e.g., CITI licence).
 
 Note: The original repository does not indicate a license at present. Make sure to choose and add one if needed.
 
