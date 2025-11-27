@@ -1,12 +1,54 @@
 <!doctype html>
 <html>
-<head><meta charset="utf-8"><title>Mock UI - Account Load</title></head>
+<head>
+<meta charset="utf-8">
+<title>Mock UI - Account Load</title>
+<style>
+  body { font-family: Arial; margin: 20px; }
+  label { margin-right: 20px; display: inline-block; }
+  .box {
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 6px;
+    background: #f7f7f7;
+  }
+  .title {
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  pre { margin: 0; white-space: pre-wrap; }
+</style>
+</head>
+
 <body>
 <h3>Mock UI - Account Load</h3>
-<label>Customer ID: <input id="cust" value="101"></label>
-<label>Account ID: <input id="acct" value="ACC1001"></label>
+
+<label>Customer ID: 
+  <input id="cust" value="101">
+</label>
+
+<label>Account ID: 
+  <input id="acct" value="ACC1001">
+</label>
+
 <button id="load">Load Account</button>
-<pre id="out" style="white-space:pre-wrap;border:1px solid #ccc;padding:8px;"></pre>
+
+<div id="statusBox" class="box" style="display:none;">
+  <div class="title">Status</div>
+  <div id="statusText"></div>
+</div>
+
+<div id="dbBox" class="box" style="display:none;">
+  <div class="title">Demographic (DB)</div>
+  <pre id="dbOut"></pre>
+</div>
+
+<div id="fdrBox" class="box" style="display:none;">
+  <div class="title">FDR Account</div>
+  <pre id="fdrOut"></pre>
+</div>
+
 <script>
 document.getElementById('load').onclick = async () => {
   const payload = {
@@ -15,14 +57,25 @@ document.getElementById('load').onclick = async () => {
     firstName: "Alice",
     lastName: "Smith"
   };
+
   const r = await fetch("http://localhost:8001/api/account/load", {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {'Content-Type':'application/json'}
   });
-  const j = await r.json();
-  document.getElementById('out').textContent = JSON.stringify(j, null, 2);
-}
+
+  const res = await r.json();
+
+  // Display sections
+  document.getElementById("statusBox").style.display = "block";
+  document.getElementById("dbBox").style.display = "block";
+  document.getElementById("fdrBox").style.display = "block";
+
+  // Fill content
+  document.getElementById("statusText").textContent = res.status;
+  document.getElementById("dbOut").textContent = JSON.stringify(res.db, null, 2);
+  document.getElementById("fdrOut").textContent = JSON.stringify(res.fdr, null, 2);
+};
 </script>
 </body>
 </html>
