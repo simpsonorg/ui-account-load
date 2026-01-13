@@ -55,7 +55,8 @@ document.getElementById('load').onclick = async () => {
     customerId: document.getElementById('cust').value,
     accountId: document.getElementById('acct').value,
     firstName: "Alice",
-    lastName: "Smith"
+    lastName: "Smith",
+    middleName: "dtest"
   };
 
   const r = await fetch("http://localhost:8001/api/account/load", {
